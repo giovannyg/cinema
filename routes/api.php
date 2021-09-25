@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => 'auth:sanctum'], function () {
+  Route::get('/get-loggedin-user', function() {
+    return response(request()->user());
+  });
+  Route::get('/movies', 'MovieController@index');
+  Route::get('/showtimes', 'ShowtimeController@index');
 });
