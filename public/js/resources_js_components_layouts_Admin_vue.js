@@ -29,6 +29,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -36,7 +38,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       menuEntries: [{
         text: 'Dashboard',
         isActive: true,
-        to: '/'
+        to: '/dashboard'
       }, {
         text: 'Películas',
         isActive: false,
@@ -45,27 +47,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         text: 'Turnos',
         isActive: false,
         to: '/showtimes'
-      }, {
-        text: 'Administradores',
-        isActive: false,
-        to: '/'
-      }, {
-        text: 'Perfil',
-        isActive: false,
-        to: '/'
-      }, {
-        text: 'Cerrar sesión',
-        isActive: false,
-        action: 'logout'
-      }]
+      }
+      /*       { text: 'Administradores', isActive: false, to: '/admins'},
+            { text: 'Perfil', isActive: false, to: '/profile'}, */
+      ]
     };
   },
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)({
     signOut: "auth/logout"
   })), {}, {
-    handleClick: function handleClick(action, event) {
-      if (action) this[action](event);
-    },
     logout: function logout() {
       var _this = this;
 
@@ -95,6 +85,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Siderbar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Siderbar */ "./resources/js/components/Siderbar.vue");
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -153,7 +151,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#siderbar_menu {\n  width: 200px;\n}\n#siderbar_menu > ul  {\n  -webkit-padding-start: 0;\n          padding-inline-start: 0;\n  -webkit-margin-before: 0;\n          margin-block-start: 0;\n}\n#siderbar_menu > ul > li {\n  height: 45px;\n}\n#siderbar_menu > ul > li > a {\n  color: white;\n  text-decoration: none;\n  display: flex;\n  align-items: center;\n  padding-left: 10px;\n  height: inherit;\n}\n#siderbar_menu > ul > li.active {\n  background: #009b8eea;\n}\n@media screen and (max-width: 991px) {\n#siderbar_menu {\n    display: none;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#siderbar_menu {\n  width: 200px;\n}\n#siderbar_menu > ul  {\n  -webkit-padding-start: 0;\n          padding-inline-start: 0;\n  -webkit-margin-before: 0;\n          margin-block-start: 0;\n}\n#siderbar_menu > ul > li {\n  height: 45px;\n}\n#siderbar_menu > ul > li > a {\n  color: white;\n  text-decoration: none;\n  display: flex;\n  align-items: center;\n  padding-left: 10px;\n  height: inherit;\n}\n#siderbar_menu > ul > li > a.router-link-active {\n  background: #009b8eea;\n}\n@media screen and (max-width: 991px) {\n#siderbar_menu {\n    display: none;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -362,33 +360,45 @@ var render = function() {
     [
       _c(
         "ul",
-        _vm._l(_vm.menuEntries, function(entry) {
-          return _c(
-            "li",
-            { key: entry.text, class: { active: entry.isActive } },
-            [
-              !entry.action
-                ? _c("router-link", { attrs: { to: entry.to } }, [
-                    _vm._v(_vm._s(entry.text))
-                  ])
-                : _c(
-                    "a",
-                    {
-                      staticClass: "font-weight-400",
-                      attrs: { role: "button" },
-                      on: {
-                        click: function($event) {
-                          return _vm.handleClick(entry.action, $event)
+        { attrs: { id: "menu_list" } },
+        [
+          _vm._l(_vm.menuEntries, function(entry) {
+            return _c(
+              "li",
+              { key: entry.text, class: { active: entry.isActive } },
+              [
+                !entry.action
+                  ? _c(
+                      "router-link",
+                      {
+                        attrs: { to: entry.to },
+                        nativeOn: {
+                          click: function($event) {
+                            return _vm.markActive($event)
+                          }
                         }
-                      }
-                    },
-                    [_vm._v(_vm._s(entry.text))]
-                  )
-            ],
-            1
-          )
-        }),
-        0
+                      },
+                      [_vm._v(_vm._s(entry.text))]
+                    )
+                  : _vm._e()
+              ],
+              1
+            )
+          }),
+          _vm._v(" "),
+          _c("li", [
+            _c(
+              "a",
+              {
+                staticClass: "font-weight-400",
+                attrs: { role: "button" },
+                on: { click: _vm.logout }
+              },
+              [_vm._v("Cerrar sesión")]
+            )
+          ])
+        ],
+        2
       )
     ]
   )
@@ -429,19 +439,26 @@ var render = function() {
           _c("ul", { staticClass: "navbar-nav mr-auto" }, [
             _c(
               "li",
-              { staticClass: "nav-item active" },
               [
                 _c(
                   "router-link",
                   {
-                    staticClass: "nav-link",
+                    staticClass: "nav-link d-flex align-items-center",
                     attrs: { to: { name: "dashboard" } }
                   },
                   [
-                    _vm._v("Home "),
-                    _c("span", { staticClass: "sr-only" }, [
-                      _vm._v("(current)")
-                    ])
+                    _c(
+                      "div",
+                      { staticClass: "h2 mb-0 d-inline" },
+                      [
+                        _c("b-icon", {
+                          staticClass: "color-white px-2",
+                          attrs: { role: "button", icon: "film" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v("Películas\n                  ")
                   ]
                 )
               ],
@@ -451,11 +468,20 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "ml-auto" }, [
             _c("ul", { staticClass: "navbar-nav text-white" }, [
-              _vm._v(
-                "\n                    " +
-                  _vm._s(_vm.user.name) +
-                  "\n                "
-              )
+              _c("li", { staticClass: "d-flex align-items-center" }, [
+                _c(
+                  "div",
+                  { staticClass: "h2 mb-0 d-inline" },
+                  [
+                    _c("b-icon", {
+                      staticClass: "color-white px-2",
+                      attrs: { role: "button", icon: "person-fill" }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(_vm._s(_vm.user.name) + "\n                  ")
+              ])
             ])
           ])
         ]

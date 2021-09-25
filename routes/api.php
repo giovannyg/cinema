@@ -19,5 +19,9 @@ Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => 'auth:sanct
     return response(request()->user());
   });
   Route::get('/movies', 'MovieController@index');
-  Route::get('/showtimes', 'ShowtimeController@index');
+  Route::patch('/showtimes/{model}/change-status', 'ShowtimeController@changeStatus');
+  Route::resource('/showtimes', 'ShowtimeController', [
+    'only' => ['index', 'store', 'update', 'destroy'],
+    'parameters' => ['showtimes' => 'model']
+  ]);
 });

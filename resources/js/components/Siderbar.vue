@@ -1,9 +1,11 @@
 <template>
   <nav id="siderbar_menu" class="bg-dark h-100">
-    <ul>
+    <ul id="menu_list">
       <li v-for="entry in menuEntries" :key="entry.text" v-bind:class="{ active: entry.isActive }">
-        <router-link v-if="!entry.action" :to="entry.to">{{ entry.text }}</router-link>
-        <a v-else role="button" class="font-weight-400" @click="handleClick(entry.action, $event)">{{ entry.text }}</a>
+        <router-link v-if="!entry.action" :to="entry.to" @click.native="markActive($event)">{{ entry.text }}</router-link>
+      </li>
+      <li>
+        <a role="button" class="font-weight-400" @click="logout">Cerrar sesión</a>
       </li>
     </ul>
   </nav>
@@ -16,21 +18,17 @@ import {mapActions} from 'vuex'
 export default {
   data: () => ({
     menuEntries: [
-      { text: 'Dashboard', isActive: true, to: '/'},
+      { text: 'Dashboard', isActive: true, to: '/dashboard'},
       { text: 'Películas', isActive: false, to: '/movies'},
       { text: 'Turnos', isActive: false, to: '/showtimes'},
-      { text: 'Administradores', isActive: false, to: '/'},
-      { text: 'Perfil', isActive: false, to: '/'},
-      { text: 'Cerrar sesión', isActive: false, action: 'logout' },
+/*       { text: 'Administradores', isActive: false, to: '/admins'},
+      { text: 'Perfil', isActive: false, to: '/profile'}, */
     ]
   }),
   methods:{
       ...mapActions({
           signOut:"auth/logout"
       }),
-      handleClick(action, event) {
-        if(action) this[action](event);
-      },
       logout(){
           axios.post('/logout').then(({data})=>{
               this.signOut()
@@ -68,9 +66,10 @@ export default {
     height: inherit;
   }
 
-  #siderbar_menu > ul > li.active {
+  #siderbar_menu > ul > li > a.router-link-active {
     background: #009b8eea;
   }
+
   @media screen and (max-width: 991px) {
     #siderbar_menu {
       display: none;

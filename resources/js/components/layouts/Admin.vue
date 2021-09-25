@@ -6,13 +6,21 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <router-link :to="{name:'dashboard'}" class="nav-link">Home <span class="sr-only">(current)</span></router-link>
+                    <li>
+                      <router-link :to="{name:'dashboard'}" class="nav-link d-flex align-items-center">
+                        <div class="h2 mb-0 d-inline">
+                          <b-icon role="button" icon="film" class="color-white px-2"></b-icon>
+                        </div>Películas
+                      </router-link>
                     </li>
                 </ul>
                 <div class="ml-auto">
                     <ul class="navbar-nav text-white">
-                        {{ user.name }}
+                      <li class="d-flex align-items-center">
+                        <div class="h2 mb-0 d-inline">
+                          <b-icon role="button" icon="person-fill" class="color-white px-2"></b-icon>
+                        </div>{{ user.name }}
+                      </li>
                     </ul>
                 </div>
             </div>

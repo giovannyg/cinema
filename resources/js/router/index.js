@@ -18,11 +18,12 @@ const ROUTES = [
         component:Login,
         meta:{
             middleware:"guest",
-            title:`Login`
+            title: 'Login'
         }
     },
     {
         path:"/",
+        redirect: { name: 'dashboard' },
         component:Admin,
         meta:{
             middleware:"auth"
@@ -30,10 +31,10 @@ const ROUTES = [
         children:[
             {
                 name:"dashboard",
-                path: '/',
+                path: '/dashboard',
                 component: Dashboard,
                 meta:{
-                    title:`Dashboard`
+                    title:'Dashboard'
                 }
             }
         ]
@@ -71,6 +72,22 @@ const ROUTES = [
                 }
             }
         ]
+    },
+    {
+        path:"/admins",
+        component:Admin,
+        redirect: { name: 'dashboard' },
+        meta:{
+            middleware:"auth"
+        },
+    },
+    {
+        path:"/profile",
+        component:Admin,
+        redirect: { name: 'dashboard' },
+        meta:{
+            middleware:"auth"
+        },
     }
 ]
 
