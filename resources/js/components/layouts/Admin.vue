@@ -5,14 +5,16 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-<!--                     <li>
-                      <router-link :to="{name:'dashboard'}" class="nav-link d-flex align-items-center">
-                        <div class="h2 mb-0 d-inline">
-                          <b-icon role="button" icon="film" class="color-white px-2"></b-icon>
-                        </div>Películas
-                      </router-link>
-                    </li> -->
+                <ul id="logo" class="navbar-nav mr-auto">
+                  <li>
+                    <router-link :to="{name:'dashboard'}" class="nav-link d-flex align-items-center">
+                      <div class="h2 mb-0 d-inline">
+                        <b-icon role="button" icon="film" class="color-white px-2"></b-icon>
+                      </div>Películas
+                    </router-link>
+                  </li>
+                </ul>
+                <ul id="mobile_menu" class="navbar-nav mr-auto">
                   <li v-for="entry in menuEntries" :key="entry.text">
                     <router-link v-if="!entry.action" :to="entry.to" class="nav-link d-flex align-items-center">
                         <div class="h2 mb-0 d-inline"></div>{{ entry.text }}
@@ -61,10 +63,16 @@ export default {
 </script>
 
 <style lang="scss">
-  #navbarSupportedContent {
-    visibility: hidden;
+  #mobile_menu {
+    display: none;
     @media screen and (max-width: 991px) {
-      visibility: visible;
+      display: block;
+    }
+  }
+  #logo {
+    display: block;
+    @media screen and (max-width: 991px) {
+      display: none;
     }
   }
 </style>

@@ -123,6 +123,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -166,7 +168,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#navbarSupportedContent {\n  visibility: hidden;\n}\n@media screen and (max-width: 991px) {\n#navbarSupportedContent {\n    visibility: visible;\n}\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "#mobile_menu {\n  display: none;\n}\n@media screen and (max-width: 991px) {\n#mobile_menu {\n    display: block;\n}\n}\n#logo {\n  display: block;\n}\n@media screen and (max-width: 991px) {\n#logo {\n    display: none;\n}\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -510,7 +512,41 @@ var render = function() {
         [
           _c(
             "ul",
-            { staticClass: "navbar-nav mr-auto" },
+            { staticClass: "navbar-nav mr-auto", attrs: { id: "logo" } },
+            [
+              _c(
+                "li",
+                [
+                  _c(
+                    "router-link",
+                    {
+                      staticClass: "nav-link d-flex align-items-center",
+                      attrs: { to: { name: "dashboard" } }
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "h2 mb-0 d-inline" },
+                        [
+                          _c("b-icon", {
+                            staticClass: "color-white px-2",
+                            attrs: { role: "button", icon: "film" }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v("Películas\n                ")
+                    ]
+                  )
+                ],
+                1
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "ul",
+            { staticClass: "navbar-nav mr-auto", attrs: { id: "mobile_menu" } },
             _vm._l(_vm.menuEntries, function(entry) {
               return _c(
                 "li",
@@ -525,7 +561,7 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "h2 mb-0 d-inline" }),
-                          _vm._v(_vm._s(entry.text) + "\n                    ")
+                          _vm._v(_vm._s(entry.text) + "\n                ")
                         ]
                       )
                     : _vm._e()
@@ -552,7 +588,7 @@ var render = function() {
               ],
               1
             ),
-            _vm._v(_vm._s(_vm.user.name) + "\n                  ")
+            _vm._v(_vm._s(_vm.user.name) + "\n              ")
           ])
         ])
       ])
