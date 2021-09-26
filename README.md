@@ -8,6 +8,7 @@
 </p>
 
 ## Rquerimientos:
+- Composer
 - Laravel:
   - PHP >= 7.3
   - BCMath PHP Extension
@@ -32,8 +33,6 @@ git clone https://github.com/giovannyg/cinema.git
 3. Configurar .env </br>
 Crear una copia del archivo .env.example llamada .env en la raíz del proyecto y modificar/agregar lo siguiente
 ```
-APP_DEBUG=false
-
 DB_CONNECTION=pgsql
 DB_HOST=<DB_HOST>
 DB_PORT=<DB_PORT, default: 5432>
@@ -46,7 +45,20 @@ SESSION_DOMAIN=.localhost
 SANCTUM_STATEFUL_DOMAINS="localhost,127.0.0.1"
 ```
 
-4. Ejecutar composer install:
+4. Instalar deperdencias de composer
+Ejecutar en la raíz del proyecto:
 ```
 composer install
+```
+
+5. Generar llave de encriptación
+Ejecutar en la raíz del proyecto:
+```
+php artisan key:generate
+```
+
+## Usuario y contraseña:
+```
+admin@admin.com
+secret
 ```
