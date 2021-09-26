@@ -8,7 +8,7 @@
 </p>
 
 ## Rquerimientos:
-- Back end:
+- Laravel:
   - PHP >= 7.3
   - BCMath PHP Extension
   - Ctype PHP Extension
@@ -19,8 +19,6 @@
   - PDO PHP Extension
   - Tokenizer PHP Extension
   - XML PHP Extension
-- Front end:
-  - Node & npm
 
 ## Deployment:
 
@@ -29,15 +27,13 @@
 git clone https://github.com/giovannyg/cinema.git
 ```
 
-2. Ejecutar composer install:
-```
-composer install
-```
-3. Importar base de datos ```database.pgsql``` en tu servidor de base de datos.
+2. Importar base de datos ```database.pgsql``` en tu servidor de base de datos.
 
-5. Configurar .env </br>
+3. Configurar .env </br>
 Crear una copia del archivo .env.example llamada .env en la raíz del proyecto y modificar/agregar lo siguiente
 ```
+APP_DEBUG=false
+
 DB_CONNECTION=pgsql
 DB_HOST=<DB_HOST>
 DB_PORT=<DB_PORT, default: 5432>
@@ -48,4 +44,9 @@ DB_PASSWORD=<DB_PASSWORD>
 SESSION_DOMAIN=.localhost
 
 SANCTUM_STATEFUL_DOMAINS="localhost,127.0.0.1"
+```
+
+4. Ejecutar composer install:
+```
+composer install
 ```
