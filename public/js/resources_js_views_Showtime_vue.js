@@ -187,13 +187,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this5 = this;
 
       this.$swal.fire({
+        heightAuto: false,
         title: 'Eliminar',
         text: "¿Seguro que deseas eliminar este registro?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí!'
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Aceptar'
       }).then(function (result) {
         if (result.isConfirmed) {
           axios["delete"]("/api/showtimes/".concat(row.id)).then(function (response) {

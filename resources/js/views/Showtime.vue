@@ -164,13 +164,15 @@ export default {
       },
       deleteModel(row) {
         this.$swal.fire({
+          heightAuto: false,
           title: 'Eliminar',
           text: "¿Seguro que deseas eliminar este registro?",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
-          confirmButtonText: 'Sí!'
+          cancelButtonText: 'Cancelar',
+          confirmButtonText: 'Aceptar'
         }).then((result) => {
           if (result.isConfirmed) {
             axios.delete(`/api/showtimes/${row.id}`)
