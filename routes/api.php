@@ -17,11 +17,15 @@ use Illuminate\Support\Facades\Route;
 Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => 'auth:sanctum'], function () {
   Route::get('/get-loggedin-user', function() {
     return response(request()->user());
-  });
-  Route::get('/movies', 'MovieController@index');
+  });  
   Route::patch('/showtimes/{model}/change-status', 'ShowtimeController@changeStatus');
   Route::resource('/showtimes', 'ShowtimeController', [
     'only' => ['index', 'store', 'update', 'destroy'],
     'parameters' => ['showtimes' => 'model']
+  ]);
+  Route::patch('/movies/{model}/change-status', 'MovieController@changeStatus');
+  Route::resource('/movies', 'MovieController', [
+    'only' => ['index', 'store', 'update', 'destroy'],
+    'parameters' => ['movies' => 'model']
   ]);
 });

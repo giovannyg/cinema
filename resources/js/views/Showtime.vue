@@ -6,13 +6,13 @@
             <div class="card shadow-sm">
                 <div class="card-header d-flex">
                   <h4 class="flex-grow-1">Turnos</h4>
-                  <button class="btn btn-primary" @click="displayForm">Nuevo turno</button>
+                  <button v-if="!showForm" class="btn btn-primary" @click="displayCreateForm">Nuevo turno</button>
                 </div>
                 <div class="card-body">
                   <div v-if="!showForm">
                     <v-client-table :data="list" :columns="columns" :options="options">
                     <div slot="status" slot-scope="{ row }">
-                      {{ row.status ? 'Activo' : 'Inactivo' }}
+                      {{ row.status == 1 ? 'Activo' : 'Inactivo' }}
                     </div>
                     <div slot="actions" slot-scope="{ row }">
                       <div class="h4 mb-0">
@@ -34,8 +34,8 @@
                         <b-form-checkbox
                           v-model="formData.status"
                           name="status"
-                          value="true"
-                          unchecked-value="false">Activo?
+                          value="1"
+                          unchecked-value="0">Activo?
                         </b-form-checkbox>
                       </b-form-group>
                       <div>
@@ -61,11 +61,11 @@ export default {
       editedItem: {},
       emptyFormData: {
         time: '',
-        status: false
+        status: 'false'
       },
       formData: {
         time: '',
-        status: false
+        status: 'false'
       },
       showForm: false,
       columns: [
@@ -107,7 +107,7 @@ export default {
       edit(row) {
         Object.assign(this.formData, row);
         Object.assign(this.editedItem, row);
-        this.displayForm();
+        this.showForm = true;
       },
       getList() {
         axios.get('/api/showtimes')
@@ -115,14 +115,15 @@ export default {
           this.list = response.data;
         })
       },
-      displayForm() {
+      displayCreateForm() {
         this.showForm = true;
+        Object.assign(this.formData, this.emptyFormData);
       },
       submitForm() {
         if(!this.formData.id)
           this.store();
-        else
-          this.update(this.formData.id, this.formData);
+        else 
+          this.update(this.formData.id);
       },
       store() {
         axios.post('/api/showtimes', this.formData)
@@ -138,13 +139,12 @@ export default {
             this.displayAlert(true, 'danger', 'Ocurrió un error, intente más tarde, por favor.');
         });
       },
-      update(id, data) {
-        axios.patch(`/api/showtimes/${id}`, data)
+      update(id) {
+        axios.patch(`/api/showtimes/${id}`, this.formData)
         .then(response => {
           this.displayAlert(5, 'success', 'Turno actualizado correctamente.');
-          this.list.push(response.data);
           this.showForm = false;
-          Object.assign(this.list.find(element => element.id === id), data);
+          Object.assign(this.list[this.list.findIndex((e) => { return e.id === this.formData.id})], this.formData);
         }).catch(error => {
           if(error.response.status === 422)
             this.displayAlert(true, 'danger', Object.values(error.response.data.errors)[0][0]);
@@ -153,7 +153,14 @@ export default {
         });
       },
       changeStatus(row) {
-        this.update(row.id, {status: !row.status, time: row.time })
+        let newStatus = {status: row.status == 0 };
+        axios.patch(`/api/showtimes/${row.id}/change-status`, {status: row.status == 0 ? 1 : 0})
+        .then(response => {
+          Object.assign(this.list.find(element => element.id === row.id), newStatus);
+        })
+        .catch(error => {
+            this.displayAlert(true, 'danger', 'Ocurrió un error, intente más tarde, por favor.');
+        });
       },
       deleteModel(row) {
         this.$swal.fire({
@@ -172,6 +179,9 @@ export default {
               this.list.splice(this.list.findIndex((e) => { return e.id === row.id}), 1);
             })
             .catch(error => {
+              if(error.response.status === 400)
+                this.displayAlert(true, 'danger', error.response.data.message);
+              else
                 this.displayAlert(true, 'danger', 'Ocurrió un error, intente más tarde, por favor.');
             });
           }

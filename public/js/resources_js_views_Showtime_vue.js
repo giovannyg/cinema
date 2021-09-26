@@ -80,11 +80,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       editedItem: {},
       emptyFormData: {
         time: '',
-        status: false
+        status: 'false'
       },
       formData: {
         time: '',
-        status: false
+        status: 'false'
       },
       showForm: false,
       columns: ['id', 'time', 'status', 'actions'],
@@ -122,7 +122,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     edit: function edit(row) {
       Object.assign(this.formData, row);
       Object.assign(this.editedItem, row);
-      this.displayForm();
+      this.showForm = true;
     },
     getList: function getList() {
       var _this = this;
@@ -131,11 +131,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this.list = response.data;
       });
     },
-    displayForm: function displayForm() {
+    displayCreateForm: function displayCreateForm() {
       this.showForm = true;
+      Object.assign(this.formData, this.emptyFormData);
     },
     submitForm: function submitForm() {
-      if (!this.formData.id) this.store();else this.update(this.formData.id, this.formData);
+      if (!this.formData.id) this.store();else this.update(this.formData.id);
     },
     store: function store() {
       var _this2 = this;
@@ -152,30 +153,38 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         } else _this2.displayAlert(true, 'danger', 'Ocurrió un error, intente más tarde, por favor.');
       });
     },
-    update: function update(id, data) {
+    update: function update(id) {
       var _this3 = this;
 
-      axios.patch("/api/showtimes/".concat(id), data).then(function (response) {
+      axios.patch("/api/showtimes/".concat(id), this.formData).then(function (response) {
         _this3.displayAlert(5, 'success', 'Turno actualizado correctamente.');
 
-        _this3.list.push(response.data);
-
         _this3.showForm = false;
-        Object.assign(_this3.list.find(function (element) {
-          return element.id === id;
-        }), data);
+        Object.assign(_this3.list[_this3.list.findIndex(function (e) {
+          return e.id === _this3.formData.id;
+        })], _this3.formData);
       })["catch"](function (error) {
         if (error.response.status === 422) _this3.displayAlert(true, 'danger', Object.values(error.response.data.errors)[0][0]);else _this3.displayAlert(true, 'danger', 'Ocurrió un error, intente más tarde, por favor.');
       });
     },
     changeStatus: function changeStatus(row) {
-      this.update(row.id, {
-        status: !row.status,
-        time: row.time
+      var _this4 = this;
+
+      var newStatus = {
+        status: row.status == 0
+      };
+      axios.patch("/api/showtimes/".concat(row.id, "/change-status"), {
+        status: row.status == 0 ? 1 : 0
+      }).then(function (response) {
+        Object.assign(_this4.list.find(function (element) {
+          return element.id === row.id;
+        }), newStatus);
+      })["catch"](function (error) {
+        _this4.displayAlert(true, 'danger', 'Ocurrió un error, intente más tarde, por favor.');
       });
     },
     deleteModel: function deleteModel(row) {
-      var _this4 = this;
+      var _this5 = this;
 
       this.$swal.fire({
         title: 'Eliminar',
@@ -188,13 +197,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (result) {
         if (result.isConfirmed) {
           axios["delete"]("/api/showtimes/".concat(row.id)).then(function (response) {
-            _this4.displayAlert(5, 'success', 'Turno eliminado.');
+            _this5.displayAlert(5, 'success', 'Turno eliminado.');
 
-            _this4.list.splice(_this4.list.findIndex(function (e) {
+            _this5.list.splice(_this5.list.findIndex(function (e) {
               return e.id === row.id;
             }), 1);
           })["catch"](function (error) {
-            _this4.displayAlert(true, 'danger', 'Ocurrió un error, intente más tarde, por favor.');
+            if (error.response.status === 400) _this5.displayAlert(true, 'danger', error.response.data.message);else _this5.displayAlert(true, 'danger', 'Ocurrió un error, intente más tarde, por favor.');
           });
         }
       });
@@ -321,14 +330,16 @@ var render = function() {
             _c("div", { staticClass: "card-header d-flex" }, [
               _c("h4", { staticClass: "flex-grow-1" }, [_vm._v("Turnos")]),
               _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  on: { click: _vm.displayForm }
-                },
-                [_vm._v("Nuevo turno")]
-              )
+              !_vm.showForm
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      on: { click: _vm.displayCreateForm }
+                    },
+                    [_vm._v("Nuevo turno")]
+                  )
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "card-body" }, [
@@ -352,7 +363,7 @@ var render = function() {
                                   _vm._v(
                                     "\n                    " +
                                       _vm._s(
-                                        row.status ? "Activo" : "Inactivo"
+                                        row.status == 1 ? "Activo" : "Inactivo"
                                       ) +
                                       "\n                  "
                                   )
@@ -415,7 +426,7 @@ var render = function() {
                           ],
                           null,
                           false,
-                          3044521125
+                          527433428
                         )
                       })
                     ],
@@ -466,8 +477,8 @@ var render = function() {
                                 {
                                   attrs: {
                                     name: "status",
-                                    value: "true",
-                                    "unchecked-value": "false"
+                                    value: "1",
+                                    "unchecked-value": "0"
                                   },
                                   model: {
                                     value: _vm.formData.status,

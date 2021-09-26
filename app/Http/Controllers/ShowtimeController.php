@@ -18,7 +18,7 @@ class ShowtimeController extends Controller
     try {
       return Showtime::create($request->all());
     } catch (\Exception $e) {
-      Log::error($e->getMessage());
+      Log::error($e);
       return response(['message' => $e->getMessage()], 500);
     }
   }
@@ -28,7 +28,17 @@ class ShowtimeController extends Controller
     try {
       return $model->update($request->all());
     } catch (\Exception $e) {
-      Log::error($e->getMessage());
+      Log::error($e);
+      return response(['message' => $e->getMessage()], 500);
+    }
+  }
+
+  public function changeStatus(Showtime $model) 
+  {
+    try {
+      $model->update(request()->only('status'));
+    } catch (\Exception $e) {
+      Log::error($e);
       return response(['message' => $e->getMessage()], 500);
     }
   }
@@ -36,9 +46,11 @@ class ShowtimeController extends Controller
   public function destroy(Showtime $model) 
   {
     try {
-      return $model->delete();
+      if($model->movies->count() > 0)
+        return response(['message' => 'El turno está asignado a una o más películas.'], 400);
+      $model->delete();
     } catch (\Exception $e) {
-      Log::error($e->getMessage());
+      Log::error($e);
       return response(['message' => $e->getMessage()], 500);
     }
   }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ShowtimeRequest extends FormRequest
@@ -24,7 +25,7 @@ class ShowtimeRequest extends FormRequest
     public function rules()
     {
         return [
-            'time' => 'required|date_format:H:i:s|unique:showtimes'
+            'time' => "required|date_format:H:i:s|unique:showtimes" . (($this->id) ? ",time,{$this->id}" : ''),
         ];
     }
 

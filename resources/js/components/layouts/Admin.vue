@@ -6,23 +6,28 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li>
+<!--                     <li>
                       <router-link :to="{name:'dashboard'}" class="nav-link d-flex align-items-center">
                         <div class="h2 mb-0 d-inline">
                           <b-icon role="button" icon="film" class="color-white px-2"></b-icon>
                         </div>Películas
                       </router-link>
-                    </li>
+                    </li> -->
+                  <li v-for="entry in menuEntries" :key="entry.text">
+                    <router-link v-if="!entry.action" :to="entry.to" class="nav-link d-flex align-items-center">
+                        <div class="h2 mb-0 d-inline"></div>{{ entry.text }}
+                    </router-link>
+                  </li>
                 </ul>
-                <div class="ml-auto">
-                    <ul class="navbar-nav text-white">
-                      <li class="d-flex align-items-center">
-                        <div class="h2 mb-0 d-inline">
-                          <b-icon role="button" icon="person-fill" class="color-white px-2"></b-icon>
-                        </div>{{ user.name }}
-                      </li>
-                    </ul>
-                </div>
+            </div>
+            <div class="ml-auto">
+                <ul class="navbar-nav text-white">
+                  <li class="d-flex align-items-center">
+                    <div class="h2 mb-0 d-inline">
+                      <b-icon role="button" icon="person-fill" class="color-white px-2"></b-icon>
+                    </div>{{ user.name }}
+                  </li>
+                </ul>
             </div>
         </nav>
         <div class="d-flex h-100">
@@ -44,8 +49,22 @@ export default {
     },
     data(){
         return {
-            user: this.$store.state.auth.user
+            user: this.$store.state.auth.user,
+            menuEntries: [
+              { text: 'Dashboard', isActive: true, to: '/dashboard'},
+              { text: 'Películas', isActive: false, to: '/movies'},
+              { text: 'Turnos', isActive: false, to: '/showtimes'},
+            ]
         }
     }
 }
 </script>
+
+<style lang="scss">
+  #navbarSupportedContent {
+    visibility: hidden;
+    @media screen and (max-width: 991px) {
+      visibility: visible;
+    }
+  }
+</style>

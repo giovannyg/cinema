@@ -11,6 +11,7 @@ window.Vue = require('vue').default;
 import {ServerTable, ClientTable, Event} from 'vue-tables-2';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueSweetalert2 from 'vue-sweetalert2';
+import Multiselect from 'vue-multiselect'
 import router from './router'
 import store from './store'
 import App from './App';
@@ -28,6 +29,9 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
 Vue.use(VueSweetalert2);
+
+Vue.component('multiselect', Multiselect)
+
 
 
 /**

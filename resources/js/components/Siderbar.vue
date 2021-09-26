@@ -1,8 +1,8 @@
 <template>
   <nav id="siderbar_menu" class="bg-dark h-100">
     <ul id="menu_list">
-      <li v-for="entry in menuEntries" :key="entry.text" v-bind:class="{ active: entry.isActive }">
-        <router-link v-if="!entry.action" :to="entry.to" @click.native="markActive($event)">{{ entry.text }}</router-link>
+      <li v-for="entry in menuEntries" :key="entry.text">
+        <router-link v-if="!entry.action" :to="entry.to">{{ entry.text }}</router-link>
       </li>
       <li>
         <a role="button" class="font-weight-400" @click="logout">Cerrar sesión</a>
