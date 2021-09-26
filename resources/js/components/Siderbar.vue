@@ -21,8 +21,6 @@ export default {
       { text: 'Dashboard', isActive: true, to: '/dashboard'},
       { text: 'Películas', isActive: false, to: '/movies'},
       { text: 'Turnos', isActive: false, to: '/showtimes'},
-/*       { text: 'Administradores', isActive: false, to: '/admins'},
-      { text: 'Perfil', isActive: false, to: '/profile'}, */
     ]
   }),
   methods:{

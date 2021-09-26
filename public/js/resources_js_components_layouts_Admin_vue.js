@@ -47,10 +47,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         text: 'Turnos',
         isActive: false,
         to: '/showtimes'
-      }
-      /*       { text: 'Administradores', isActive: false, to: '/admins'},
-            { text: 'Perfil', isActive: false, to: '/profile'}, */
-      ]
+      }]
     };
   },
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)({
